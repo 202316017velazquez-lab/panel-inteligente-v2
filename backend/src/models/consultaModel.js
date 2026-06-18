@@ -13,18 +13,40 @@ class ConsultaModel {
 
     async ensureLogFile() {
         try {
+            // Verificar si el archivo existe
             await fs.access(LOG_FILE);
-        } catch {
-            await fs.mkdir(path.dirname(LOG_FILE), { recursive: true });
-            await fs.writeFile(LOG_FILE, JSON.stringify([]));
+            
+            // Verificar que el JSON sea válido
+            const data = await fs.readFile(LOG_FILE, 'utf8');
+            JSON.parse(data);
+            
+            console.log('✅ Archivo de logs válido');
+        } catch (error) {
+            // Si el archivo no existe o está corrupto, crearlo nuevo
+            console.log('⚠️ Archivo de logs corrupto o inexistente, recreando...');
+            try {
+                await fs.mkdir(path.dirname(LOG_FILE), { recursive: true });
+                await fs.writeFile(LOG_FILE, JSON.stringify([]));
+                console.log('✅ Archivo de logs recreado correctamente');
+            } catch (err) {
+                console.error('❌ Error al recrear archivo de logs:', err);
+            }
         }
     }
 
     async guardarConsulta(consulta) {
         try {
-            const data = await fs.readFile(LOG_FILE, 'utf8');
-            const consultas = JSON.parse(data);
+            // Leer el archivo actual
+            let consultas = [];
+            try {
+                const data = await fs.readFile(LOG_FILE, 'utf8');
+                consultas = JSON.parse(data);
+            } catch (error) {
+                // Si el archivo no existe o está corrupto, empezar con array vacío
+                consultas = [];
+            }
             
+            // Agregar nueva consulta
             const nuevaConsulta = {
                 id: Date.now().toString(),
                 ...consulta,
@@ -32,12 +54,19 @@ class ConsultaModel {
             };
             
             consultas.push(nuevaConsulta);
+            
+            // Guardar solo las últimas 1000 consultas
+            if (consultas.length > 1000) {
+                consultas = consultas.slice(-1000);
+            }
+            
             await fs.writeFile(LOG_FILE, JSON.stringify(consultas, null, 2));
             
             return nuevaConsulta;
         } catch (error) {
-            console.error('Error guardando consulta:', error);
-            throw new Error('Error al guardar la consulta');
+            console.error('❌ Error guardando consulta:', error);
+            // No lanzar error para que no afecte a la respuesta de la API
+            return null;
         }
     }
 
@@ -47,7 +76,18 @@ class ConsultaModel {
             const consultas = JSON.parse(data);
             return consultas.slice(-limit).reverse();
         } catch (error) {
-            console.error('Error obteniendo consultas:', error);
+            console.error('❌ Error obteniendo consultas:', error);
+            return [];
+        }
+    }
+
+    async obtenerConsultasPorAPI(api) {
+        try {
+            const data = await fs.readFile(LOG_FILE, 'utf8');
+            const consultas = JSON.parse(data);
+            return consultas.filter(c => c.api === api);
+        } catch (error) {
+            console.error('❌ Error obteniendo consultas por API:', error);
             return [];
         }
     }
