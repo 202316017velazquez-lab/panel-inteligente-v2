@@ -7,19 +7,17 @@ const getApiUrl = () => {
                         window.location.hostname !== '127.0.0.1' &&
                         !window.location.hostname.includes('192.168');
     
-    // 🔥 CAMBIA ESTA URL por la de tu backend en Render
-    const PRODUCTION_API_URL = 'https://panel-inteligente-api.onrender.com/api';
+    // ✅ URL DE TU BACKEND EN RENDER (¡LA CORRECTA!)
+    const PRODUCTION_API_URL = 'https://panel-inteligente-v2.onrender.com/api';
     
-    // Si estamos en producción (Render, Cyclic, etc.)
     if (isProduction) {
         return PRODUCTION_API_URL;
     }
     
-    // Si estamos en local (desarrollo)
+    // URL para desarrollo local
     return 'http://localhost:3000/api';
 };
 
-// Exportar configuración
 export const CONFIG = {
     API_BASE_URL: getApiUrl(),
     isProduction: window.location.hostname !== 'localhost' && 
