@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Inteligente de Información</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> Panel Inteligente de Información</h1>
+            <p>Sistema integrado de consulta multi-API</p>
+        </header>
+
+        <!-- Panel de Control -->
+        <section class="control-panel">
+            <div class="search-grid">
+                <div class="search-group">
+                    <label for="cityInput"><i class="fas fa-city"></i> Ciudad</label>
+                    <input type="text" id="cityInput" placeholder="Ej: Madrid" value="Madrid">
+                </div>
+                
+                <div class="search-group">
+                    <label for="topicInput"><i class="fas fa-tag"></i> Tema de noticias</label>
+                    <input type="text" id="topicInput" placeholder="Ej: tecnología" value="tecnología">
+                </div>
+                
+                <div class="search-group">
+                    <label for="githubInput"><i class="fab fa-github"></i> Usuario/Repo GitHub</label>
+                    <input type="text" id="githubInput" placeholder="Ej: usuario/repo" value="facebook/react">
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="consultarBtn" class="btn-primary">
+                    <i class="fas fa-search"></i> Consultar Todo
+                </button>
+                <button id="favoritosBtn" class="btn-secondary">
+                    <i class="fas fa-star"></i> Favoritos
+                </button>
+                <button id="adminBtn" class="btn-secondary">
+                    <i class="fas fa-chart-bar"></i> Panel de Administración
+                </button>
+            </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" style="margin-bottom:20px;">
+            <div class="progress-bar" id="progressBar" style="width:0%; height:4px; background:linear-gradient(90deg, #667eea, #764ba2); border-radius:2px; transition:width 0.3s;"></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#718096; margin-top:5px;">
+                <span id="progressText">Iniciando consultas...</span>
+                <span id="progressCount">0/4</span>
+            </div>
+        </div>
+
+        <!-- Grid de Resultados -->
+        <div class="results-grid">
+            <!-- Clima -->
+            <div class="card" id="weatherCard">
+                <div class="card-header">
+                    <h2><i class="fas fa-cloud-sun"></i> Clima</h2>
+                    <span class="badge" id="weatherStatus">Cargando...</span>
+                </div>
+                <div class="card-body" id="weatherContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Consultando clima...</div>
+                </div>
+            </div>
+
+            <!-- NASA -->
+            <div class="card" id="nasaCard">
+                <div class="card-header">
+                    <h2><i class="fas fa-rocket"></i> NASA</h2>
+                    <span class="badge" id="nasaStatus">Cargando...</span>
+                </div>
+                <div class="card-body" id="nasaContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Consultando NASA...</div>
+                </div>
+            </div>
+
+            <!-- Noticias -->
+            <div class="card" id="newsCard">
+                <div class="card-header">
+                    <h2><i class="fas fa-newspaper"></i> Noticias</h2>
+                    <span class="badge" id="newsStatus">Cargando...</span>
+                </div>
+                <div class="card-body" id="newsContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Consultando noticias...</div>
+                </div>
+            </div>
+
+            <!-- GitHub -->
+            <div class="card" id="githubCard">
+                <div class="card-header">
+                    <h2><i class="fab fa-github"></i> GitHub</h2>
+                    <span class="badge" id="githubStatus">Cargando...</span>
+                </div>
+                <div class="card-body" id="githubContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Consultando GitHub...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Administración -->
+        <div id="adminPanel" class="admin-panel" style="display: none;">
+            <div class="admin-header">
+                <h2><i class="fas fa-chart-bar"></i> Panel de Administración</h2>
+                <button id="closeAdminBtn" class="btn-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3>Estadísticas</h3>
+                    <div id="estadisticasContent"><div class="loading">Cargando...</div></div>
+                </div>
+                <div class="admin-card">
+                    <h3>Últimas Consultas</h3>
+                    <div id="consultasContent"><div class="loading">Cargando...</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Favoritos -->
+        <div id="favoritosPanel" class="favoritos-panel" style="display: none;">
+            <div class="admin-header">
+                <h2><i class="fas fa-star"></i> Consultas Favoritas</h2>
+                <button id="closeFavoritosBtn" class="btn-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="favoritosContent"><div class="loading">Cargando...</div></div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/app.js"></script>
+</body>
+</html>

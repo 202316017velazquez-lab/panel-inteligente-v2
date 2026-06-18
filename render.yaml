@@ -1,0 +1,9 @@
+# render.yaml - VERSIÓN SEGURA (SIN KEYS)
+services:
+  - type: web
+    name: panel-inteligente-api
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    # ELIMINA LA SECCIÓN envVars - Las keys se agregarán manualmente en Render
